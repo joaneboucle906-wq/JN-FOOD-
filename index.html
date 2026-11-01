@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>JN FOOD</title>
+<meta name="description" content="JN FOOD : restauration universitaire saine à prix bas, avec commande en ligne. Projet étudiant du département de Sciences Économiques.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#top">JN<b>.</b>FOOD</a>
+    <nav aria-label="Navigation">
+      <a href="#projet">Le projet</a>
+      <a href="#menu">Menu</a>
+      <a href="#commande">Commander</a>
+      <a href="#equipe">Équipe</a>
+      <a href="#groupe">Groupe</a>
+      <a href="#avis">Ton avis</a>
+    </nav>
+  </div>
+</header>
+<main id="top">
+  <section class="hero">
+    <div class="shapes" aria-hidden="true"><i class="a"></i><i class="b"></i><i class="c"></i></div>
+    <div class="wrap">
+      <p class="label">Restauration universitaire · Sciences Économiques</p>
+      <h1>Manger sain, <em>à prix bas.</em></h1>
+      <p class="lead">JN FOOD prépare des repas de qualité pour les étudiants, à un prix pensé pour tous les budgets du campus, avec une commande en ligne pour en finir avec les longues files d'attente.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#menu">Voir le menu</a>
+        <a class="btn ghost" href="#avis">Donner mon avis</a>
+      </div>
+      <div class="facts">
+        <div><span class="label">Commande en ligne</span><strong>17h à 4h</strong></div>
+        <div><span class="label">Retrait</span><strong>Le matin</strong></div>
+        <div><span class="label">Paiement</span><strong>Déduction directe</strong></div>
+      </div>
+    </div>
+  </section>
+<section id="projet">
+    <div class="wrap split">
+      <div style="display:grid;gap:18px">
+        <p class="label">Le constat</p>
+        <h2>Un aliment disponible n'est pas forcément un bon aliment.</h2>
+        <p class="lead">La sécurité alimentaire, c'est accéder à une nourriture suffisante, de qualité et à un prix accessible. Sur le campus, ce n'est pas toujours le cas.</p>
+      </div>
+      <div class="stack">
+        <div><h3>Une alimentation trop riche, pas assez variée</h3><p>Des produits consommés tous les jours, souvent chargés en sucres, en sel ou en matières grasses, au détriment de la diversité nutritionnelle.</p></div>
+        <div><h3>Du temps perdu entre les cours</h3><p>Sans offre rapide à proximité, les pauses se perdent en déplacements et en files d'attente.</p></div>
+        <div><h3>Fatigue et baisse de concentration</h3><p>Une alimentation mal adaptée pèse directement sur les études.</p></div>
+        <div><h3>Un budget serré</h3><p>Trouver des repas de qualité à prix accessible reste compliqué, avec peu de visibilité sur la provenance de ce qu'on mange.</p></div>
+      </div>
+    </div>
+  </section>
+ <section>
+    <div class="wrap">
+      <p class="label">La solution</p>
+      <h2 style="margin-top:14px">Trois piliers.</h2>
+      <div class="pillars">
+        <div class="pillar"><i class="dot"></i><h3>Accessibilité</h3><p>Des prix abordables, pensés pour tous les budgets du campus.</p></div>
+        <div class="pillar"><i class="dot"></i><h3>Organisation</h3><p>Des outils informatiques pour un service fluide, sans longues files d'attente.</p></div>
+        <div class="pillar"><i class="dot"></i><h3>Sécurité</h3><p>Un respect strict des règles de sécurité alimentaire et d'hygiène.</p></div>
+      </div>
+    </div>
+  </section>
+<section id="menu">
+    <div class="wrap">
+      <div class="menu-head">
+        <div style="display:grid;gap:14px">
+          <p class="label">Menu à l'étude</p>
+          <h2>Les plats que vous demandez.</h2>
+        </div>
+        <p class="lead" style="max-width:38ch;font-size:16px">Touchez jusqu'à 3 plats pour composer votre sélection, puis donnez-la dans le formulaire. Les prix seront annoncés avant l'ouverture.</p>
+      </div>
+      <div class="menu" id="menuGrid"></div>
+      <div class="basket" aria-live="polite">
+        <div>
+          <span class="label" id="count">Ma sélection · 0 / 3</span>
+          <div id="picked"></div>
+        </div>
+        <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSe0K4sNRvcr-SWyvSAxEwlp2OoRPUEPClcysWsYtSe-cxhKfA/viewform" target="_blank" rel="noopener">Envoyer mon choix dans le formulaire</a>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="wrap">
+      <p class="label">Budget par jour</p>
+      <h2 style="margin-top:14px">Quatre tranches de prix testées auprès des étudiants.</h2>
+      <div class="budget">
+        <div><span class="label">Moins de</span><strong>1 000 F</strong><span>Petit budget</span></div>
+        <div><span class="label">Entre</span><strong>1 000 – 1 500 F</strong><span>Budget serré</span></div>
+        <div><span class="label">Entre</span><strong>1 500 – 2 500 F</strong><span>Budget moyen</span></div>
+        <div><span class="label">À partir de</span><strong>2 500 F</strong><span>Budget confortable</span></div>
+      </div>
+      <p class="note">Le formulaire demande aussi de noter le prix bas, le goût, l'hygiène et la rapidité de 1 à 5. Ces réponses servent à fixer les prix et les portions.</p>
+    </div>
+  </section>
+  <section id="commande" class="inv">
+    <div class="wrap">
+      <p class="label">Commander</p>
+      <h2 style="margin-top:14px">Commandez la nuit, récupérez le matin.</h2>
+      <p class="lead" style="margin-top:18px">Le site de commande ouvrira un à deux mois après la validation du projet. Voici comment il fonctionnera.</p>
+      <ol class="steps">
+        <li><h3>Choisir</h3><p>Vous composez votre repas parmi les plats du menu.</p></li>
+        <li><h3>Commander</h3><p>La commande est ouverte chaque soir de 17h à 4h du matin.</p></li>
+        <li><h3>Payer</h3><p>Le montant est déduit directement, sans file ni monnaie à rendre.</p></li>
+        <li><h3>Retirer</h3><p>Votre repas est prêt le matin, dans un contenant réutilisable.</p></li>
+      </ol>
+      <p class="note" style="color:var(--inv-fg);opacity:.75">Le service n'est pas encore ouvert. Aucune commande ne peut être passée sur cette page.</p>
+    </div>
+  </section>
+ <section>
+    <div class="wrap split">
+      <div style="display:grid;gap:18px">
+        <p class="label">Nos objectifs</p>
+        <h2>Ce que JN FOOD veut tenir.</h2>
+      </div>
+      <div class="stack">
+        <div><h3>Une alimentation saine et équilibrée</h3><p>Un cuisinier qualifié et certifié veille à la qualité, à l'hygiène et à la préparation des repas.</p></div>
+        <div><h3>Un service numérique</h3><p>Une plateforme pour commander à l'avance, mieux gérer les commandes et réduire les files d'attente.</p></div>
+        <div><h3>Moins de plastique</h3><p>Des contenants réutilisables ou plus respectueux de l'environnement, pour un campus plus propre.</p></div>
+      </div>
+    </div>
+  </section>
+<section id="equipe">
+    <div class="wrap">
+      <p class="label">Qui sommes-nous</p>
+      <h2 style="margin-top:14px">Un binôme complémentaire, au service des étudiants.</h2>
+      <div class="team">
+        <div class="person">
+          <span class="role">Co-fondatrice</span>
+          <h3>KLE Sella Nancy</h3>
+          <p>Étudiante en L2 Sciences Économiques. Elle pilote la stratégie, la gestion économique et la coordination avec l'administration.</p>
+        </div>
+        <div class="person">
+          <span class="role">Co-fondateur</span>
+          <h3>EBOUCLE Joan Steve</h3>
+          <p>Étudiant en L2 Sciences Économiques. Il assure la fluidité opérationnelle, la logistique et les outils informatiques, certifié par les structures coréennes KFHI et KIA.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+ <section id="groupe">
+    <div class="wrap split">
+      <div style="display:grid;gap:18px;align-content:start">
+        <p class="label">Rester informé</p>
+        <h2>Rejoins le groupe WhatsApp.</h2>
+        <p class="lead">Ouverture du site, plats du jour, annonces : tout passe par le groupe JN FOOD. Scanne le code avec ton téléphone ou touche le bouton.</p>
+        <div><a class="btn" href="https://chat.whatsapp.com/G9mT8qVk6mZErdYiavEdb1?mode=gi_t" target="_blank" rel="noopener">Rejoindre le groupe</a></div>
+      </div>
+      <figure class="qr"><img src="qr-whatsapp.jpg" alt="Code QR du groupe WhatsApp J.N FOOD" width="520" height="494"></figure>
+    </div>
+  </section>
+  <section id="avis" class="inv">
+    <div class="wrap cta">
+      <p class="label">Donne ton avis en 2 minutes</p>
+      <h2>Quel plat veux-tu vraiment ?</h2>
+      <p class="lead">Ton budget, tes plats préférés, la boîte repas que tu préfères, tes suggestions. Tes réponses décident du menu et des prix.</p>
+      <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSe0K4sNRvcr-SWyvSAxEwlp2OoRPUEPClcysWsYtSe-cxhKfA/viewform" target="_blank" rel="noopener">Répondre au formulaire</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>JN FOOD · Département de Sciences Économiques</span>
+    <span>Projet étudiant de KLE Sella Nancy et EBOUCLE Joan Steve</span>
+  </div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
