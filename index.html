@@ -32,56 +32,8 @@
     <div class="container">
       <h2>Le menu</h2>
       <p class="intro">Touchez un plat pour l'ajouter à votre panier, touchez-le à nouveau pour le retirer.</p>
- <div class="menu-grid">
-  <div class="dish" data-id="rognons-sautes" data-price="1000" role="button" tabindex="0" aria-pressed="false" onclick="toggleDish(this)">
-          <div class="dish-img"><img src="rognons.jpg" alt="Rognons sautés"></div>
-          <div class="dish-text">
-            <span class="badge">Abats</span>
-            <h3>Rognons sautés</h3>
-            <p>Rognons sautés à la poêle, bien assaisonnés.</p>
-          </div>
-        </div>
-  <div class="dish" data-id="poisson-braise" data-price="1000" role="button" tabindex="0" aria-pressed="false" onclick="toggleDish(this)">
-          <div class="dish-img"><img src="poisson.jpg" alt="Poisson braisé"></div>
-          <div class="dish-text">
-            <span class="badge">Grillades</span>
-            <h3>Poisson braisé</h3>
-            <p>Poisson grillé à la braise.</p>
-          </div>
-        </div>
-  <div class="dish" data-id="poulet-saute" data-price="1500" role="button" tabindex="0" aria-pressed="false" onclick="toggleDish(this)">
-          <div class="dish-img"><img src="poulet.jpg" alt="Poulet sauté"></div>
-          <div class="dish-text">
-            <span class="badge">Poulet</span>
-            <h3>Poulet sauté</h3>
-            <p>Morceaux de poulet sautés, servis chauds.</p>
-          </div>
-        </div>
- <div class="dish" data-id="petits-pois" data-price="1000" role="button" tabindex="0" aria-pressed="false" onclick="toggleDish(this)">
-          <div class="dish-img"><img src="petits-pois.jpg" alt="Petits pois"></div>
-          <div class="dish-text">
-            <span class="badge">Légumes</span>
-            <h3>Petits pois</h3>
-            <p>À la viande ou au poulet, avec des pommes de terre.</p>
-          </div>
-        </div>
- <div class="dish" data-id="tchep" data-price="1500" role="button" tabindex="0" aria-pressed="false" onclick="toggleDish(this)">
-          <div class="dish-img"><img src="tchep.jpg" alt="Tchep"></div>
-          <div class="dish-text">
-            <span class="badge">Riz</span>
-            <h3>Tchep</h3>
-            <p>Plat de riz et de poisson, copieux et parfumé.</p>
-          </div>
-        </div>
-     <div class="dish" data-id="alloco" data-price="1000" role="button" tabindex="0" aria-pressed="false" onclick="toggleDish(this)">
-          <div class="dish-img"><img src="alloco.jpg" alt="Alloco"></div>
-          <div class="dish-text">
-            <span class="badge">Accompagnement</span>
-            <h3>Alloco</h3>
-            <p>Bananes plantain frites, dorées et croustillantes.</p>
-          </div>
-        </div>
-   </div>
+      <div class="menu-grid" id="menu-grid"></div>
+
     <div class="basket-box" id="panier">
         <h3>Mon panier</h3>
         <p id="basket-empty">Votre panier est vide.</p>
@@ -101,6 +53,7 @@
 <footer>
   <div class="container">© JN Food · Projet étudiant de Sciences Économiques</div>
 </footer>
+<script src="menu.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
