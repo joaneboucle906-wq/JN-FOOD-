@@ -1,63 +1,40 @@
-<!-- Grille du menu avec intégration des images culinaires -->
-<div class="menu">
-   <div class="dish" data-id="rognons" onclick="toggleDish(this)">
-    <div class="dish-img">
-      <img src="https://cetoclub.com" alt="Rognons sautés aux oignons et poivrons">
-    </div>
-    <div class="dish-content">
-      <span class="tag">Abats</span>
-      <h3>Rognons sautés</h3>
-      <p>Grillés et sautés, un délice réconfortant du campus.</p>
-    </div>
-  </div>
-  <div class="dish" data-id="poisson" onclick="toggleDish(this)">
-    <div class="dish-img">
-      <img src="https://tmbusiness.ci" alt="Poisson braisé entier">
-    </div>
-    <div class="dish-content">
-      <span class="tag">Grillades</span>
-      <h3>Poisson braisé</h3>
-      <p>Poisson entier braisé au charbon ou Poulet braisé.</p>
-    </div>
-  </div>
-  <div class="dish" data-id="poulet" onclick="toggleDish(this)">
-    <div class="dish-img">
-      <img src="https://asante-afrika.fr" alt="Poulet sauté en sauce">
-    </div>
-    <div class="dish-content">
-      <span class="tag">Poulet</span>
-      <h3>Poulet sauté</h3>
-      <p>Morceaux dorés, au choix : sauté ou Poulet mayo.</p>
-    </div>
-  </div>
- <div class="dish" data-id="petits-pois" onclick="toggleDish(this)">
-    <div class="dish-img">
-      <img src="https://aistoucuisine.com" alt="Ragoût de petits pois et pommes de terre">
-    </div>
-    <div class="dish-content">
-      <span class="tag">Légumes</span>
-      <h3>Petits pois</h3>
-      <p>À la viande ou au poulet, accompagnés de pommes de terre.</p>
-    </div>
-  </div>
-  <div class="dish" data-id="tchep" onclick="toggleDish(this)">
-    <div class="dish-img">
-      <img src="https://issanny.com" alt="Riz gras rouge tchep">
-    </div>
-    <div class="dish-content">
-      <span class="tag">Riz</span>
-      <h3>Tchep</h3>
-      <p>Le fameux riz gras sénégalais rouge à la viande.</p>
-    </div>
-  </div>
-  <div class="dish" data-id="alloco" onclick="toggleDish(this)">
-    <div class="dish-img">
-      <img src="https://mapcooking.net" alt="Dés de bananes plantains frites">
-    </div>
-    <div class="dish-content">
-      <span class="tag">Accompagnement</span>
-      <h3>Alloco</h3>
-      <p>Dés de bananes plantains frites, bien dorés et sucrés.</p>
-    </div>
-  </div>
-</div>
+/* --- Style des cartes avec images --- */
+.dish {
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden; /* Garde les angles arrondis sur l'image */
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.dish:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 5px 5px 0 var(--line);
+}
+/* Zone d'image carrée ou rectangulaire fixe */
+.dish-img {
+  width: 100%;
+  height: 180px; /* Hauteur fixe pour aligner parfaitement toutes les cartes */
+  border-bottom: 2px solid var(--line);
+  overflow: hidden;
+  background: var(--bg);
+}
+.dish-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Recadre intelligemment l'image au centre sans la déformer */
+  transition: transform .3s ease;
+}
+/* Effet zoom discret sur la photo au survol */
+.dish:hover .dish-img img {
+  transform: scale(1.04);
+}
+/* Zone de texte sous la photo */
+.dish-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
