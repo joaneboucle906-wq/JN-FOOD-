@@ -1,69 +1,87 @@
-// Tableau pour stocker les plats sélectionnés par l'étudiant
-let basket = [];
-/**
- * Fonction appelée au clic sur une carte de plat
- * @param {HTMLElement} element - La carte cliquée
- */
+"use strict";
+/* Panier : tableau vide au départ. Chaque entrée = { id, title }. */
+var basket = [];
+var listEl = document.getElementById("basket-list");
+var emptyEl = document.getElementById("basket-empty");
+var messageEl = document.getElementById("message");
+/* Ajoute ou retire un plat au clic sur sa carte. */
 function toggleDish(element) {
-  const dishId = element.getAttribute('data-id');
-  const dishName = element.querySelector('.dish-content h3').innerText;
- // Vérifier si le plat est déjà dans le panier numérique
-  const existingIndex = basket.findIndex(item => item.id === dishId);
-  if (existingIndex > -1) {
-    // Si le plat y est déjà, on l'enlève du tableau
-    basket.splice(existingIndex, 1);
-    element.removeAttribute('aria-pressed'); // Retire le style visuel sombre
+  if (!element) return;
+  var id = element.dataset.id;
+  var titleEl = element.querySelector("h3");
+  if (!id || !titleEl) return;
+  var title = titleEl.textContent.trim();
+  var index = basket.findIndex(function (item) { return item.id === id; });
+  if (index > -1) {
+    basket.splice(index, 1);
+    element.removeAttribute("aria-pressed");   // retire l'état visuel de sélection
   } else {
-    // Si le plat n'y est pas, on l'ajoute au tableau
-    basket.push({ id: dishId, name: dishName });
-    element.setAttribute('aria-pressed', 'true'); // Applique le style visuel sombre
+    basket.push({ id: id, title: title });
+    element.setAttribute("aria-pressed", "true");
   }
-  // Mettre à jour l'affichage de la liste en bas du menu
+  clearMessage();
   updateBasketUI();
 }
-/**
- * Fonction pour actualiser l'affichage du panier sur la page
- */
+/* Met à jour la liste du panier en temps réel (sans prix). */
 function updateBasketUI() {
-  const itemsContainer = document.getElementById('basket-items');
-  const emptyMessage = document.getElementById('basket-empty');
-  // On vide le conteneur avant de le reconstruire
-  itemsContainer.innerHTML = '';
-  // Si le panier est vide, on réaffiche le message d'aide
-  if (basket.length === 0) {
-    emptyMessage.style.display = 'block';
-    return;
-  }
- // Masquer le message "Panier vide"
-  emptyMessage.style.display = 'none';
- // Ajouter chaque plat sélectionné sous forme de puce stylisée
-  basket.forEach(item => {
-    const li = document.createElement('li');
-    li.innerText = item.name;
-    itemsContainer.appendChild(li);
+  listEl.innerHTML = "";
+  basket.forEach(function (item) {
+    var li = document.createElement("li");
+    li.textContent = item.title;               // textContent : pas d'injection HTML
+    listEl.appendChild(li);
   });
+  emptyEl.hidden = basket.length > 0;          // masque "panier vide" si au moins un plat
 }
-
-/**
- * Fonction finale lors du clic sur "Confirmer ma commande"
- */
+/* Affiche un message. type : "error" | "warn" | "success" */
+function showMessage(type, text, items) {
+  messageEl.className = type;
+  messageEl.textContent = text;
+if (items && items.length) {
+    var ul = document.createElement("ul");
+    items.forEach(function (name) {
+      var li = document.createElement("li");
+      li.textContent = name;
+      ul.appendChild(li);
+    });
+    messageEl.appendChild(ul);
+  }
+  messageEl.hidden = false;
+}
+function clearMessage() {
+  messageEl.hidden = true;
+  messageEl.textContent = "";
+  messageEl.className = "";
+}
+/* Commande ouverte de 17h00 à 04h59 (heure locale de l'utilisateur). */
+function isOrderingOpen() {
+  var hour = new Date().getHours();
+  return hour >= 17 || hour < 5;
+}
+/* Validation de la commande. */
 function checkout() {
-  const now = new Date();
-  const currentHour = now.getHours();
-  const errorBanner = document.getElementById('time-error');
- // Contrôle des horaires du service : Bloqué entre 05h00 et 16h59
-  if (currentHour >= 5 && currentHour < 17) {
-    errorBanner.style.style.display = 'block';
+  if (!isOrderingOpen()) {
+    showMessage("error", "Les commandes sont fermées. Vous pouvez commander chaque jour de 17h00 à 05h00 du matin.");
     return;
   }
- errorBanner.style.display = 'none';
- // Alerte si l'étudiant clique sans avoir choisi de repas
   if (basket.length === 0) {
-    alert('Votre panier numérique est vide. Veuillez sélectionner un plat avant de confirmer.');
+    showMessage("warn", "Votre panier est vide. Choisissez au moins un plat avant de commander.");
     return;
   }
-  // Synthèse des plats choisis
-  const orderedDishes = basket.map(item => item.name).join(', ');
-    // Message de confirmation avant redirection
-  alert(`Commande enregistrée avec succès !\nPlats : ${orderedDishes}\n\nPréparation de la redirection sécurisée vers l'application Wave...`);
+var titles = basket.map(function (item) { return item.title; });
+  showMessage("success", "Commande validée ! Plats choisis :", titles);
+  /* Ici : appel à votre système de paiement (par exemple Wave). */
 }
+/* Accessibilité clavier : Entrée ou Espace sur une carte = clic. */
+document.querySelectorAll(".dish").forEach(function (card) {
+  card.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggleDish(card);
+    }
+  });
+});
+/* Image absente : masque l'icône cassée, le fond vert reste visible. */
+document.querySelectorAll(".dish-img img").forEach(function (img) {
+  img.addEventListener("error", function () { img.style.display = "none"; });
+});
+updateBasketUI();
