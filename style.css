@@ -66,3 +66,4 @@ main{padding-top:64px}
 #message ul{margin:8px 0 0 20px;font-weight:500}
 footer{background:#071429;color:rgba(248,244,233,.75);padding-block:28px;font-size:14px;text-align:center}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.dish,.btn{transition:none}}
+#basket-list li{cursor:pointer}
