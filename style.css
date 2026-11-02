@@ -1,40 +1,73 @@
-/* --- Style des cartes avec images --- */
-.dish {
-  background: var(--surface);
-  border: 2px solid var(--line);
-  border-radius: var(--radius);
-  overflow: hidden; /* Garde les angles arrondis sur l'image */
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  transition: transform .2s, box-shadow .2s;
+:root {
+  --bg: #f1e9d8;
+  --fg: #141210;
+  --surface: #e7dcc5;
+  --line: #141210;
+  --muted: #5a5144;
+  --accent: #a8741a;
+  --on-accent: #141210;
+  --inv-bg: #141210;
+  --inv-fg: #f1e9d8;
+  --display: "Fraunces", Georgia, serif;
+  --body: "Plus Jakarta Sans", system-ui, sans-serif;
+  --mono: ui-monospace, Menlo, monospace;
+  --radius: 12px;
 }
-.dish:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 5px 5px 0 var(--line);
-}
-/* Zone d'image carrée ou rectangulaire fixe */
-.dish-img {
-  width: 100%;
-  height: 180px; /* Hauteur fixe pour aligner parfaitement toutes les cartes */
-  border-bottom: 2px solid var(--line);
-  overflow: hidden;
-  background: var(--bg);
-}
-.dish-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Recadre intelligemment l'image au centre sans la déformer */
-  transition: transform .3s ease;
-}
-/* Effet zoom discret sur la photo au survol */
-.dish:hover .dish-img img {
-  transform: scale(1.04);
-}
-/* Zone de texte sous la photo */
-.dish-content {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+a { color: inherit; }
+.wrap { max-width: 1100px; margin: 0 auto; padding-inline: 20px; }
+section { padding-block: 72px; border-top: 2px solid var(--line); }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.15; margin: 0; }
+h2 { font-size: clamp(30px, 5vw, 44px); margin-bottom: 12px; }
+h3 { font-size: 22px; }
+p { margin: 0; }
+.label { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); display: inline-block; margin-bottom: 8px; }
+.lead { font-size: 19px; max-width: 60ch; color: var(--muted); }
+/* Header */
+header { position: sticky; top: 0; z-index: 50; background: var(--bg); border-bottom: 2px solid var(--line); }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 16px; }
+.logo { font-family: var(--display); font-weight: 700; font-size: 24px; text-decoration: none; }
+.logo b { color: var(--accent); }
+nav { display: flex; gap: 20px; font-family: var(--mono); font-size: 14px; }
+nav a { text-decoration: none; font-weight: 600; }
+/* Boutons */
+.btn { display: inline-block; background: var(--accent); color: var(--on-accent); font-family: var(--mono); font-size: 14px; font-weight: 600; padding: 14px 24px; border: 2px solid var(--line); text-decoration: none; cursor: pointer; transition: transform 0.1s, box-shadow 0.1s; }
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--line); }
+/* Hero */
+.hero { padding-block: 84px 96px; border-top: 0; }
+.hero h1 { font-size: clamp(40px, 8vw, 76px); max-width: 14ch; margin-bottom: 24px; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+/* Grille du Menu & Cartes */
+.menu-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 40px; }
+.menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+.dish { background: var(--surface); border: 2px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; cursor: pointer; transition: transform .2s, box-shadow .2s; }
+.dish:hover { transform: translate(-4px, -4px); box-shadow: 6px 6px 0 var(--line); }
+.dish-img { width: 100%; height: 180px; border-bottom: 2px solid var(--line); overflow: hidden; background: var(--bg); }
+.dish-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+.dish:hover .dish-img img { transform: scale(1.04); }
+.dish-content { padding: 20px; display: flex; flex-direction: column; gap: 6px; }
+.dish .tag { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.dish p { font-size: 15px; color: var(--muted); }
+/* État sélectionné en JavaScript */
+.dish[aria-pressed="true"] { background: var(--inv-bg); color: var(--inv-fg); border-color: var(--inv-bg); }
+.dish[aria-pressed="true"] p { color: var(--inv-fg); opacity: .75; }
+/* Panier */
+.basket { margin-top: 40px; border: 2px solid var(--line); border-radius: var(--radius); padding: 24px; background: var(--surface); }
+.basket-items { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.basket-items li { background: var(--bg); border: 2px solid var(--line); padding: 4px 12px; border-radius: 999px; font-size: 15px; font-weight: 600; }
+.basket .none { color: var(--muted); font-size: 15px; margin-top: 8px; }
+/* Section Inversée (Commande) */
+.inv { background: var(--inv-bg); color: var(--inv-fg); }
+.inv h2 { color: var(--inv-fg); }
+.inv .label { color: var(--inv-fg); opacity: .7; }
+.inv .btn { border-color: var(--inv-fg); }
+.inv .btn:hover { box-shadow: 4px 4px 0 var(--inv-fg); }
+.facts { display: flex; flex-wrap: wrap; border: 2px solid var(--inv-fg); margin-top: 24px; background: var(--inv-bg); }
+.facts div { flex: 1 1 200px; padding: 18px; border-right: 2px solid var(--inv-fg); }
+.facts div:last-child { border-right: 0; }
+.facts strong { display: block; font-size: 20px; margin-top: 4px; color: var(--accent); }
+@media(max-width: 640px) { .facts div { border-right: 0; border-bottom: 2px solid var(--inv-fg); } .facts div:last-child { border-bottom: 0; } }
+.error-banner { margin-top: 16px; padding: 16px; background: #5c1919; color: #ffcccc; border: 2px solid #ffcccc; font-family: var(--mono); font-size: 14px; }
+footer { padding-block: 32px; font-size: 14px; color: var(--muted); text-align: center; border-top: 2px solid var(--line); }
