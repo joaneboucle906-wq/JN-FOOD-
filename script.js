@@ -12,7 +12,7 @@ function toggleDish(element) {
   if (!id || !titleEl) return;
   var title = titleEl.textContent.trim();
   var price = Number(element.dataset.price) || 0;
- var index = basket.findIndex(function (item) { return item.id === id; });
+var index = basket.findIndex(function (item) { return item.id === id; });
  if (index > -1) {
     basket.splice(index, 1);
     element.removeAttribute("aria-pressed");   // retire l'état visuel de sélection
@@ -50,13 +50,13 @@ function updateBasketUI() {
     });
     listEl.appendChild(li);
   });
-  emptyEl.hidden = basket.length > 0;          // masque "panier vide" si au moins un plat
+emptyEl.hidden = basket.length > 0;          // masque "panier vide" si au moins un plat
 }
 /* Affiche un message. type : "error" | "warn" | "success" */
 function showMessage(type, text, items) {
   messageEl.className = type;
   messageEl.textContent = text;
-  if (items && items.length) {
+ if (items && items.length) {
     var ul = document.createElement("ul");
     items.forEach(function (name) {
       var li = document.createElement("li");
@@ -83,25 +83,64 @@ function checkout() {
     showMessage("error", "Les commandes sont fermées. Vous pouvez commander chaque jour de 17h00 à 05h00 du matin.");
     return;
   }
- if (basket.length === 0) {
+  if (basket.length === 0) {
     showMessage("warn", "Votre panier est vide. Choisissez au moins un plat avant de commander.");
     return;
   }
  var titles = basket.map(function (item) { return item.title; });
   showMessage("success", "Commande validée ! Plats choisis :", titles);
-  /* Ici : appel à votre système de paiement (par exemple Wave). */
+/* Ici : appel à votre système de paiement (par exemple Wave). */
 }
-/* Accessibilité clavier : Entrée ou Espace sur une carte = clic. */
-document.querySelectorAll(".dish").forEach(function (card) {
-  card.addEventListener("keydown", function (e) {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      toggleDish(card);
-    }
+/* Construit les cartes du menu à partir de la liste MENU (menu.js). */
+function renderMenu() {
+  var grid = document.getElementById("menu-grid");
+  if (!grid) return;
+  grid.innerHTML = "";
+ if (typeof MENU === "undefined" || !MENU.length) {
+    var p = document.createElement("p");
+    p.className = "intro";
+    p.textContent = "Le menu du jour sera bientôt disponible.";
+    grid.appendChild(p);
+    return;
+  }
+ MENU.forEach(function (d) {
+    var card = document.createElement("div");
+    card.className = "dish";
+    card.dataset.id = d.id;
+    card.dataset.price = d.prix;
+    card.setAttribute("role", "button");
+    card.tabIndex = 0;
+    card.setAttribute("aria-pressed", "false");
+ var imgWrap = document.createElement("div");
+    imgWrap.className = "dish-img";
+    var img = document.createElement("img");
+    img.src = d.image;
+    img.alt = d.nom;
+    img.addEventListener("error", function () { img.style.display = "none"; });
+    imgWrap.appendChild(img);
+ var text = document.createElement("div");
+    text.className = "dish-text";
+    var badge = document.createElement("span");
+    badge.className = "badge";
+    badge.textContent = d.categorie;
+    var h3 = document.createElement("h3");
+    h3.textContent = d.nom;
+    var desc = document.createElement("p");
+    desc.textContent = d.description;
+    text.appendChild(badge);
+    text.appendChild(h3);
+    text.appendChild(desc);
+ card.appendChild(imgWrap);
+    card.appendChild(text);
+  card.addEventListener("click", function () { toggleDish(card); });
+    card.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleDish(card);
+      }
+    });
+    grid.appendChild(card);
   });
-});
-/* Image absente : masque l'icône cassée, le fond vert reste visible. */
-document.querySelectorAll(".dish-img img").forEach(function (img) {
-  img.addEventListener("error", function () { img.style.display = "none"; });
-});
+}
+renderMenu();
 updateBasketUI();
