@@ -21,6 +21,7 @@
     </nav>
   </div>
 </header>
+
 <main id="top">
   <div class="hero">
     <div class="container">
@@ -29,6 +30,7 @@
       <a class="btn" href="#infos">Commencer</a>
     </div>
   </div>
+
   <section id="infos">
     <div class="container">
       <h2>Mes informations</h2>
@@ -60,12 +62,14 @@
       </form>
     </div>
   </section>
+
   <section id="menu">
     <div class="container">
       <h2>Le menu</h2>
       <p class="intro">Touchez un plat pour l'ajouter à votre panier, touchez-le à nouveau pour le retirer. Dans le panier, utilisez + et − pour changer la quantité.</p>
       <div class="menu-grid" id="menu-grid"></div>
-    <div class="basket-box" id="panier">
+
+      <div class="basket-box" id="panier">
         <h3>Mon panier</h3>
         <p id="basket-empty">Votre panier est vide.</p>
         <ul id="basket-list" aria-live="polite"></ul>
@@ -75,18 +79,21 @@
       </div>
     </div>
   </section>
+
   <section id="commande">
     <div class="container">
       <h2>Passer ma commande</h2>
-      <p class="intro">Les commandes sont ouvertes chaque jour de 17h00 à 05h00 du matin. Enregistrez d'abord votre commande ci-dessus, puis payez avec Wave.</p>
-      <button class="btn" type="button" id="pay-btn" onclick="passerCommande()" disabled>Passer ma commande</button>
+      <p class="intro">Les commandes sont ouvertes chaque jour de 17h00 à 05h00 du matin. Enregistrez d'abord votre commande dans le panier, puis payez avec Wave.</p>
+      <button class="btn" type="button" id="pay-btn" onclick="passerCommande()">Passer ma commande</button>
       <div id="message" role="alert" hidden></div>
     </div>
   </section>
 </main>
+
 <footer>
   <div class="container">© JN Food · Projet étudiant de Sciences Économiques</div>
 </footer>
+
 <script src="menu.js"></script>
 <script src="script.js"></script>
 </body>
