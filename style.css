@@ -39,7 +39,7 @@ main{padding-top:64px}
 .link-btn{background:none;border:none;color:var(--green-dark);font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;margin-top:10px;padding:0}
 /* Informations étudiant */
 #infos{padding-bottom:0}
-.info-form{background:var(--white);border:2px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.info-form{background:var(--white);border:2px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 .field{display:grid;gap:6px;min-width:0}
 .field label{font-weight:700;color:var(--night);font-size:15px}
 .field input,.field select{width:100%;padding:13px 14px;border:2px solid var(--line);border-radius:12px;background:var(--cream);color:var(--text);font:inherit}
@@ -68,8 +68,15 @@ main{padding-top:64px}
 .basket-box .btn{margin-top:18px}
 #basket-empty{color:var(--muted)}
 #basket-list{list-style:none;display:grid;gap:8px}
-#basket-list li{background:var(--green-soft);border-radius:10px;padding:10px 16px;font-weight:600;color:var(--night);cursor:pointer;display:flex;justify-content:space-between;gap:12px}
+#basket-list li{background:var(--green-soft);border-radius:10px;padding:10px 16px;font-weight:600;color:var(--night);display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px}
+.b-price{white-space:nowrap}
+.qty{display:flex;align-items:center;gap:8px}
+.qty-btn{width:34px;height:34px;border-radius:50%;border:2px solid var(--green);background:#fff;color:var(--green-dark);font:inherit;font-size:20px;font-weight:800;line-height:1;cursor:pointer;display:grid;place-items:center}
+.qty-btn:hover:not(:disabled){background:var(--green);color:#fff}
+.qty-btn:disabled{opacity:.4;cursor:not-allowed}
+.qty-n{min-width:22px;text-align:center;font-weight:800}
 #basket-total{margin-top:14px;font-size:20px;font-weight:800;color:var(--night);text-align:right}
+@media(max-width:480px){#basket-list li{grid-template-columns:1fr auto}.b-price{grid-column:1 / -1;text-align:right}}
 /* Messages */
 #message,#message-save{padding:14px 18px;border-radius:12px;font-weight:600;text-align:left}
 #message{margin:24px auto 0;max-width:560px}
