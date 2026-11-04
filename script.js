@@ -53,7 +53,7 @@ function afficherMenu() {
     carte.setAttribute("tabindex", "0");
     carte.setAttribute("aria-pressed", panier[plat.id] ? "true" : "false");
     carte.dataset.id = plat.id;
- var zoneImg = document.createElement("div");
+   var zoneImg = document.createElement("div");
     zoneImg.className = "dish-img";
     var img = document.createElement("img");
     img.src = plat.image;
@@ -61,32 +61,32 @@ function afficherMenu() {
     img.loading = "lazy";
     img.onerror = function () { img.style.display = "none"; };
     zoneImg.appendChild(img);
- var texte = document.createElement("div");
+    var texte = document.createElement("div");
     texte.className = "dish-text";
- var badge = document.createElement("span");
+   var badge = document.createElement("span");
     badge.className = "badge";
     badge.textContent = plat.categorie;
- var titre = document.createElement("h3");
+    var titre = document.createElement("h3");
     titre.textContent = plat.nom;
-  var desc = document.createElement("p");
+   var desc = document.createElement("p");
     desc.textContent = plat.description;
- var prix = document.createElement("p");
+    var prix = document.createElement("p");
     prix.className = "price";
     prix.textContent = formaterPrix(plat.prix);
-  texte.appendChild(badge);
+    texte.appendChild(badge);
     texte.appendChild(titre);
     texte.appendChild(desc);
     texte.appendChild(prix);
     carte.appendChild(zoneImg);
     carte.appendChild(texte);
- carte.addEventListener("click", function () { basculerPlat(plat.id); });
+    carte.addEventListener("click", function () { basculerPlat(plat.id); });
     carte.addEventListener("keydown", function (e) {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         basculerPlat(plat.id);
       }
     });
- grille.appendChild(carte);
+    grille.appendChild(carte);
   });
 }
 /* ---------- PANIER ---------- */
@@ -130,15 +130,15 @@ function afficherPanier() {
     total.hidden = true;
     return;
   }
- vide.hidden = true;
-  ids.forEach(function (id) {
+  vide.hidden = true;
+ ids.forEach(function (id) {
     var plat = trouverPlat(id);
     var qte = panier[id];
     var verrou = !!commandeEnregistree;
-  var li = document.createElement("li");
+ var li = document.createElement("li");
    var nom = document.createElement("span");
     nom.textContent = plat.nom;
- var zoneQte = document.createElement("div");
+   var zoneQte = document.createElement("div");
     zoneQte.className = "qty";
     var n = document.createElement("span");
     n.className = "qty-n";
@@ -146,10 +146,10 @@ function afficherPanier() {
     zoneQte.appendChild(creerBouton("−", "Retirer un " + plat.nom, function () { changerQuantite(id, -1); }, verrou));
     zoneQte.appendChild(n);
     zoneQte.appendChild(creerBouton("+", "Ajouter un " + plat.nom, function () { changerQuantite(id, 1); }, verrou || qte >= QTE_MAX));
-  var prix = document.createElement("span");
+    var prix = document.createElement("span");
     prix.className = "b-price";
     prix.textContent = formaterPrix(plat.prix * qte);
-   li.appendChild(nom);
+    li.appendChild(nom);
     li.appendChild(zoneQte);
     li.appendChild(prix);
     liste.appendChild(li);
@@ -212,18 +212,18 @@ async function enregistrerCommande() {
   }
   var infos = lireInfosEtudiant();
   if (!infos) return;
- if (VERIFIER_HORAIRES && !commandesOuvertes()) {
+  if (VERIFIER_HORAIRES && !commandesOuvertes()) {
     afficherMessage("message-save", "warn", "Les commandes sont fermées pour le moment. Elles sont ouvertes chaque jour de 17h00 à 05h00.");
     return;
   }
- var commande = {
+  var commande = {
     nom: infos.nom,
     tel: infos.tel,
     classe: infos.classe,
     campus: infos.campus,
     items: idsPanier().map(function (id) { return { id: id, qty: panier[id] }; })
   };
- var bouton = document.getElementById("save-btn");
+  var bouton = document.getElementById("save-btn");
   bouton.disabled = true;
   bouton.textContent = "Enregistrement...";
   var rep;
@@ -240,7 +240,7 @@ async function enregistrerCommande() {
     bouton.textContent = "Enregistrer ma commande";
     return;
   }
- if (!rep || !rep.ok) {
+  if (!rep || !rep.ok) {
     afficherMessage("message-save", "error", echapper((rep && rep.message) || "La commande a été refusée. Réessayez."));
     bouton.disabled = false;
     bouton.textContent = "Enregistrer ma commande";
@@ -248,13 +248,13 @@ async function enregistrerCommande() {
   }
  // La référence et le total viennent du serveur
   commandeEnregistree = { reference: rep.reference, total: rep.total, nom: infos.nom };
-  var recap = idsPanier().map(function (id) {
+ var recap = idsPanier().map(function (id) {
     return "<li>" + panier[id] + " × " + echapper(trouverPlat(id).nom) + "</li>";
   }).join("");
   verrouillerInfos(true);
   actualiser();
   bouton.textContent = "Commande enregistrée ✓";
- afficherMessage(
+  afficherMessage(
     "message-save",
     "success",
     "Merci " + echapper(infos.nom) + " ! Votre commande est enregistrée.<br>" +
@@ -265,7 +265,7 @@ async function enregistrerCommande() {
     "Cliquez maintenant sur « Passer ma commande » pour payer avec Wave.</p>" +
     "<button type=\"button\" class=\"link-btn\" onclick=\"nouvelleCommande()\">Modifier / nouvelle commande</button>"
   );
- document.getElementById("pay-btn").disabled = false;
+  document.getElementById("pay-btn").disabled = false;
   document.getElementById("commande").scrollIntoView();
 }
 /* ---------- ÉTAPE 2 : PASSER LA COMMANDE (PAIEMENT WAVE) ---------- */
@@ -275,7 +275,7 @@ function passerCommande() {
     document.getElementById("panier").scrollIntoView();
     return;
   }
- var url = WAVE_LIEN + (WAVE_LIEN.indexOf("?") === -1 ? "?" : "&") + "amount=" + commandeEnregistree.total;
+  var url = WAVE_LIEN + (WAVE_LIEN.indexOf("?") === -1 ? "?" : "&") + "amount=" + commandeEnregistree.total;
  afficherMessage(
     "message",
     "success",
@@ -289,15 +289,14 @@ function nouvelleCommande() {
   panier = {};
   commandeEnregistree = null;
   verrouillerInfos(false);
- var bouton = document.getElementById("save-btn");
+  var bouton = document.getElementById("save-btn");
   bouton.disabled = false;
   bouton.textContent = "Enregistrer ma commande";
- document.getElementById("pay-btn").disabled = true;
+document.getElementById("pay-btn").disabled = true;
   document.getElementById("message-save").hidden = true;
   document.getElementById("message").hidden = true;
-actualiser();
+  actualiser();
   document.getElementById("menu").scrollIntoView();
 }
-
 /* ---------- DÉMARRAGE ---------- */
 actualiser();
