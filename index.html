@@ -21,7 +21,6 @@
     </nav>
   </div>
 </header>
-
 <main id="top">
   <div class="hero">
     <div class="container">
@@ -30,23 +29,18 @@
       <a class="btn" href="#infos">Commencer</a>
     </div>
   </div>
-
-  <section id="infos">
+<section id="infos">
     <div class="container">
       <h2>Mes informations</h2>
       <p class="intro">Renseignez vos informations pour que nous puissions préparer votre commande.</p>
       <form class="info-form" id="info-form" autocomplete="off" onsubmit="return false">
         <div class="field">
           <label for="student-name">Nom et prénom</label>
-          <input type="text" id="student-name" placeholder="Ex : Kouassi Yao" maxlength="100">
-        </div>
-        <div class="field">
-          <label for="student-phone">Téléphone</label>
-          <input type="tel" id="student-phone" inputmode="tel" placeholder="Ex : 07 00 00 00 00" maxlength="20">
+          <input type="text" id="student-name" placeholder="Ex : Kouassi Yao">
         </div>
         <div class="field">
           <label for="student-class">Classe</label>
-          <input type="text" id="student-class" placeholder="Ex : Licence 2 Sciences Éco" maxlength="100">
+          <input type="text" id="student-class" placeholder="Ex : Licence 2 Sciences Éco">
         </div>
         <div class="field">
           <label for="student-campus">Campus</label>
@@ -62,14 +56,12 @@
       </form>
     </div>
   </section>
-
-  <section id="menu">
+<section id="menu">
     <div class="container">
       <h2>Le menu</h2>
-      <p class="intro">Touchez un plat pour l'ajouter à votre panier, touchez-le à nouveau pour le retirer. Dans le panier, utilisez + et − pour changer la quantité.</p>
+      <p class="intro">Touchez un plat pour l'ajouter à votre panier, touchez-le à nouveau pour le retirer.</p>
       <div class="menu-grid" id="menu-grid"></div>
-
-      <div class="basket-box" id="panier">
+ <div class="basket-box" id="panier">
         <h3>Mon panier</h3>
         <p id="basket-empty">Votre panier est vide.</p>
         <ul id="basket-list" aria-live="polite"></ul>
@@ -79,21 +71,18 @@
       </div>
     </div>
   </section>
-
-  <section id="commande">
+ <section id="commande">
     <div class="container">
       <h2>Passer ma commande</h2>
-      <p class="intro">Les commandes sont ouvertes chaque jour de 17h00 à 05h00 du matin. Enregistrez d'abord votre commande dans le panier, puis payez avec Wave.</p>
-      <button class="btn" type="button" id="pay-btn" onclick="passerCommande()">Passer ma commande</button>
+      <p class="intro">Les commandes sont ouvertes chaque jour de 17h00 à 05h00 du matin. Enregistrez d'abord votre commande ci-dessus, puis payez avec Wave.</p>
+      <button class="btn" type="button" id="pay-btn" onclick="passerCommande()" disabled>Passer ma commande</button>
       <div id="message" role="alert" hidden></div>
     </div>
   </section>
 </main>
-
 <footer>
   <div class="container">© JN Food · Projet étudiant de Sciences Économiques</div>
 </footer>
-
 <script src="menu.js"></script>
 <script src="script.js"></script>
 </body>
