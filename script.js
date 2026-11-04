@@ -2,7 +2,7 @@
    JN Food - script.js (version complète)
    ========================================================= */
 /* ---------- RÉGLAGES ---------- */
-var URL_SHEET = "https://script.google.com/macros/s/AKfycbyiwIBMtLVV5dz2B1wH9-iJJUHW6e2tLxSj89e6FYYi5IgO-Sf4M4BxTluXnXVhn1FsqQ/exec";
+var URL_SHEET = "https://google.com";
 var NUMERO_WAVE = "0503565292";
 var NOM_WAVE = "EBOUCLE JOAN";
 // true = commandes seulement de 17h00 à 05h00 / false = toujours ouvert (pour tester)
@@ -30,7 +30,7 @@ function afficherMessage(type, html) {
 function afficherMenu() {
   var grille = document.getElementById("menu-grid");
   grille.innerHTML = "";
- MENU.forEach(function (plat) {
+MENU.forEach(function (plat) {
     var carte = document.createElement("div");
     carte.className = "dish";
     carte.setAttribute("role", "button");
@@ -45,32 +45,32 @@ function afficherMenu() {
     img.loading = "lazy";
     img.onerror = function () { img.style.display = "none"; };
     zoneImg.appendChild(img);
-  var texte = document.createElement("div");
+ var texte = document.createElement("div");
     texte.className = "dish-text";
 var badge = document.createElement("span");
     badge.className = "badge";
     badge.textContent = plat.categorie;
- var titre = document.createElement("h3");
+var titre = document.createElement("h3");
     titre.textContent = plat.nom;
- var desc = document.createElement("p");
+   var desc = document.createElement("p");
     desc.textContent = plat.description;
-  var prix = document.createElement("p");
+ var prix = document.createElement("p");
     prix.className = "price";
     prix.textContent = formaterPrix(plat.prix);
- texte.appendChild(badge);
+texte.appendChild(badge);
     texte.appendChild(titre);
     texte.appendChild(desc);
     texte.appendChild(prix);
     carte.appendChild(zoneImg);
     carte.appendChild(texte);
- carte.addEventListener("click", function () { basculerPlat(plat.id); });
+  carte.addEventListener("click", function () { basculerPlat(plat.id); });
     carte.addEventListener("keydown", function (e) {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         basculerPlat(plat.id);
       }
     });
-grille.appendChild(carte);
+  grille.appendChild(carte);
   });
 }
 /* ---------- PANIER ---------- */
@@ -89,17 +89,17 @@ function afficherPanier() {
   var vide = document.getElementById("basket-empty");
   var total = document.getElementById("basket-total");
   liste.innerHTML = "";
- if (panier.length === 0) {
+if (panier.length === 0) {
     vide.hidden = false;
     total.hidden = true;
     return;
   }
- vide.hidden = true;
+  vide.hidden = true;
   var somme = 0;
- panier.forEach(function (id) {
+  panier.forEach(function (id) {
     var plat = trouverPlat(id);
     somme += plat.prix;
- var li = document.createElement("li");
+var li = document.createElement("li");
     li.title = "Toucher pour retirer";
     var nom = document.createElement("span");
     nom.textContent = plat.nom;
@@ -110,7 +110,7 @@ function afficherPanier() {
     li.addEventListener("click", function () { basculerPlat(id); });
     liste.appendChild(li);
   });
-total.hidden = false;
+ total.hidden = false;
   total.textContent = "Total : " + formaterPrix(somme);
 }
 /* ---------- INFORMATIONS ÉTUDIANT ---------- */
@@ -129,7 +129,7 @@ champs.forEach(function (c) {
     if (!valeur) manquants.push(c.libelle);
     valeurs[c.id] = valeur;
   });
-  if (manquants.length > 0) {
+ if (manquants.length > 0) {
     var items = manquants.map(function (m) { return "<li>" + m + "</li>"; }).join("");
     afficherMessage("error", "Veuillez renseigner :<ul>" + items + "</ul>");
     document.getElementById("infos").scrollIntoView();
@@ -153,9 +153,9 @@ async function checkout() {
     document.getElementById("menu").scrollIntoView();
     return;
   }
-  var infos = lireInfosEtudiant();
+ var infos = lireInfosEtudiant();
   if (!infos) return;
- if (VERIFIER_HORAIRES && !commandesOuvertes()) {
+  if (VERIFIER_HORAIRES && !commandesOuvertes()) {
     afficherMessage("warn", "Les commandes sont fermées pour le moment. Elles sont ouvertes chaque jour de 17h00 à 05h00.");
     return;
   }
@@ -163,7 +163,7 @@ async function checkout() {
   panier.forEach(function (id) { somme += trouverPlat(id).prix; });
 var noms = panier.map(function (id) { return trouverPlat(id).nom; });
   var reference = "JN-" + Math.floor(1000 + Math.random() * 9000);
-var commande = {
+  var commande = {
     reference: reference,
     nom: infos.nom,
     classe: infos.classe,
@@ -174,7 +174,7 @@ var commande = {
  var bouton = document.getElementById("checkout-btn");
   bouton.disabled = true;
   bouton.textContent = "Envoi en cours...";
- try {
+try {
     await fetch(URL_SHEET, {
       method: "POST",
       mode: "no-cors",
@@ -187,25 +187,35 @@ var commande = {
     bouton.textContent = "Payer ma commande";
     return;
   }
- var liste = noms.map(function (n) { return "<li>" + echapper(n) + "</li>"; }).join("");
-afficherMessage(
+  // Génération dynamique du lien de paiement Wave en fonction de la somme
+  var lienWaveDynamique = "https://pay.wave.com/m/M_ci_JbW10MlZ1A4Y/c/ci/?amount=" + somme;
+    // Ouvre automatiquement la page Wave pour que le client paie
+  window.open(lienWaveDynamique, "_blank");
+  var liste = noms.map(function (n) { return "<li>" + echapper(n) + "</li>"; }).join("");
+  afficherMessage(
     "success",
-    "Merci " + echapper(infos.nom) + " ! Votre commande est enregistrée." +
+    "<h3>Merci " + echapper(infos.nom) + " ! Votre commande est enregistrée.</h3>" +
     "<ul>" + liste + "</ul>" +
     "<p style=\"margin-top:10px\"><strong>Total : " + formaterPrix(somme) + "</strong><br>" +
     "Retrait au campus : " + echapper(infos.campus) + "</p>" +
-    "<p style=\"margin-top:12px\"><strong>Pour valider, payez par Wave :</strong><br>" +
-    "Numéro : " + echapper(NUMERO_WAVE) + " (" + echapper(NOM_WAVE) + ")<br>" +
-    "Montant : " + formaterPrix(somme) + "<br>" +
-    "Référence à indiquer : <strong>" + reference + "</strong></p>"
+    "<p style=\"margin-top:12px; background:#e1f5fe; padding:10px; border-radius:5px;\">" +
+    "<strong>Paiement Wave ouvert !</strong><br>" +
+    "Une page de paiement s'est ouverte pour régler vos <strong>" + formaterPrix(somme) + "</strong>.<br>" +
+    "Si la page ne s'est pas ouverte, <a href=\"" + lienWaveDynamique + "\" target=\"_blank\" style=\"color:#0288d1; text-decoration:underline; font-weight:bold;\">cliquez ici pour payer</a>.</p>"
   );
- panier = [];
+  panier = [];
   afficherMenu();
   afficherPanier();
   bouton.disabled = false;
   bouton.textContent = "Payer ma commande";
 }
-
-/* ---------- DÉMARRAGE ---------- */
-afficherMenu();
-afficherPanier();
+/* ---------- INITIALISATION ---------- */
+document.addEventListener("DOMContentLoaded", function () {
+  afficherMenu();
+  afficherPanier();
+  var bouton = document.getElementById("checkout-btn");
+  if (bouton) {
+    bouton.removeEventListener("click", checkout); // Évite les doublons
+    bouton.addEventListener("click", checkout);
+  }
+});
