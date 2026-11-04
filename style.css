@@ -31,8 +31,12 @@ main{padding-top:64px}
 .hero h1{color:var(--cream);font-size:clamp(38px,7vw,68px);max-width:14ch;margin-bottom:18px}
 .hero h1 em{font-style:normal;color:#7fd8ae}
 .hero p{max-width:56ch;font-size:19px;opacity:.92;margin-bottom:30px}
+/* Boutons */
 .btn{display:inline-block;padding:15px 30px;border-radius:999px;background:var(--green);color:#fff;font:inherit;font-weight:700;border:2px solid var(--green);cursor:pointer;text-decoration:none;transition:transform .15s,background .15s}
 .btn:hover{background:var(--green-dark);border-color:var(--green-dark);transform:translateY(-2px)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn:disabled:hover{background:var(--green);border-color:var(--green);transform:none}
+.link-btn{background:none;border:none;color:var(--green-dark);font:inherit;font-weight:700;text-decoration:underline;cursor:pointer;margin-top:10px;padding:0}
 /* Informations étudiant */
 #infos{padding-bottom:0}
 .info-form{background:var(--white);border:2px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
@@ -40,11 +44,14 @@ main{padding-top:64px}
 .field label{font-weight:700;color:var(--night);font-size:15px}
 .field input,.field select{width:100%;padding:13px 14px;border:2px solid var(--line);border-radius:12px;background:var(--cream);color:var(--text);font:inherit}
 .field input:focus,.field select:focus{border-color:var(--green);outline:none;background:#fff}
+.field input:disabled,.field select:disabled{opacity:.65;cursor:not-allowed}
 .field.invalid input,.field.invalid select{border-color:var(--error)}
 /* Menu */
 .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
 .dish{background:var(--white);border:2px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);cursor:pointer;display:flex;flex-direction:column;min-width:0;transition:transform .15s,border-color .15s}
 .dish:hover{transform:translateY(-3px)}
+.dish.locked{opacity:.6;cursor:not-allowed}
+.dish.locked:hover{transform:none}
 .dish-img{aspect-ratio:4/3;background:var(--green-soft);overflow:hidden}
 .dish-img img{width:100%;height:100%;object-fit:cover}
 .dish-text{padding:18px 20px 22px;display:grid;gap:6px}
@@ -58,21 +65,26 @@ main{padding-top:64px}
 /* Panier */
 .basket-box{margin-top:32px;background:var(--white);border:2px solid var(--night);border-radius:var(--radius);padding:24px}
 .basket-box h3{font-size:22px;margin-bottom:12px}
+.basket-box .btn{margin-top:18px}
 #basket-empty{color:var(--muted)}
 #basket-list{list-style:none;display:grid;gap:8px}
 #basket-list li{background:var(--green-soft);border-radius:10px;padding:10px 16px;font-weight:600;color:var(--night);cursor:pointer;display:flex;justify-content:space-between;gap:12px}
 #basket-total{margin-top:14px;font-size:20px;font-weight:800;color:var(--night);text-align:right}
+/* Messages */
+#message,#message-save{padding:14px 18px;border-radius:12px;font-weight:600;text-align:left}
+#message{margin:24px auto 0;max-width:560px}
+#message-save{margin-top:18px}
+#message[hidden],#message-save[hidden]{display:none}
+#message.error,#message-save.error{background:#fdecea;color:var(--error);border:2px solid var(--error)}
+#message.warn,#message-save.warn{background:#fff4e0;color:var(--warn);border:2px solid var(--warn)}
+#message.success,#message-save.success{background:#e4f6ec;color:var(--green-dark);border:2px solid var(--green)}
+#message ul,#message-save ul{margin:8px 0 0 20px;font-weight:500}
 /* Commande */
 #commande{background:var(--night);color:var(--cream);text-align:center}
 #commande h2{color:var(--cream)}
 #commande .intro{margin-inline:auto;color:rgba(248,244,233,.85)}
 #commande .btn{background:var(--cream);color:var(--night);border-color:var(--cream)}
 #commande .btn:hover{background:#fff;border-color:#fff}
-#message{margin:24px auto 0;max-width:560px;padding:14px 18px;border-radius:12px;font-weight:600;text-align:left}
-#message[hidden]{display:none}
-#message.error{background:#fdecea;color:var(--error);border:2px solid var(--error)}
-#message.warn{background:#fff4e0;color:var(--warn);border:2px solid var(--warn)}
-#message.success{background:#e4f6ec;color:var(--green-dark);border:2px solid var(--green)}
-#message ul{margin:8px 0 0 20px;font-weight:500}
+#commande .btn:disabled:hover{background:var(--cream);border-color:var(--cream)}
 footer{background:#071429;color:rgba(248,244,233,.75);padding-block:28px;font-size:14px;text-align:center}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.dish,.btn{transition:none}}
