@@ -3,7 +3,7 @@
    ========================================================= */
 /* ---------- RÉGLAGES ---------- */
 var URL_SHEET = "https://script.google.com/macros/s/AKfycbyiwIBMtLVV5dz2B1wH9-iJJUHW6e2tLxSj89e6FYYi5IgO-Sf4M4BxTluXnXVhn1FsqQ/exec";
-var NUMERO_WAVE = "0703059619";
+var NUMERO_WAVE = "0503565292";
 var NOM_WAVE = "EBOUCLE JOAN";
 // true = commandes seulement de 17h00 à 05h00 / false = toujours ouvert (pour tester)
 var VERIFIER_HORAIRES = false;
