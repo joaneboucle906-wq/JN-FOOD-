@@ -29,7 +29,7 @@
       <a class="btn" href="#infos">Commencer</a>
     </div>
   </div>
- <section id="infos">
+  <section id="infos">
     <div class="container">
       <h2>Mes informations</h2>
       <p class="intro">Renseignez vos informations pour que nous puissions préparer votre commande.</p>
@@ -66,14 +66,16 @@
         <p id="basket-empty">Votre panier est vide.</p>
         <ul id="basket-list" aria-live="polite"></ul>
         <p id="basket-total" hidden></p>
+        <button class="btn" type="button" id="save-btn" onclick="enregistrerCommande()">Enregistrer ma commande</button>
+        <div id="message-save" role="alert" hidden></div>
       </div>
     </div>
   </section>
  <section id="commande">
     <div class="container">
       <h2>Passer ma commande</h2>
-      <p class="intro">Les commandes sont ouvertes chaque jour de 17h00 à 05h00 du matin.</p>
-      <button class="btn" type="button" id="checkout-btn" onclick="checkout()">Payer ma commande</button>
+      <p class="intro">Les commandes sont ouvertes chaque jour de 17h00 à 05h00 du matin. Enregistrez d'abord votre commande ci-dessus, puis payez avec Wave.</p>
+      <button class="btn" type="button" id="pay-btn" onclick="passerCommande()" disabled>Passer ma commande</button>
       <div id="message" role="alert" hidden></div>
     </div>
   </section>
