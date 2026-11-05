@@ -68,7 +68,20 @@ main{padding-top:64px}
 .basket-box .btn{margin-top:18px}
 #basket-empty{color:var(--muted)}
 #basket-list{list-style:none;display:grid;gap:8px}
-#basket-list li{background:var(--green-soft);border-radius:10px;padding:10px 16px;font-weight:600;color:var(--night);cursor:pointer;display:flex;justify-content:space-between;gap:12px}
+#basket-list li{background:var(--green-soft);border-radius:10px;padding:10px 16px;font-weight:600;color:var(--night);display:flex;align-items:center;gap:12px}
+.basket-name{flex:1;min-width:0;overflow-wrap:anywhere}
+.basket-price{white-space:nowrap;min-width:92px;text-align:right}
+/* Sélecteur de quantité */
+.qty{display:inline-flex;align-items:center;gap:4px;background:var(--white);border:2px solid var(--green);border-radius:999px;padding:2px}
+.qty button{width:32px;height:32px;border:none;border-radius:50%;background:var(--green);color:#fff;font:inherit;font-size:20px;font-weight:800;line-height:1;cursor:pointer;display:grid;place-items:center}
+.qty button:hover:not(:disabled){background:var(--green-dark)}
+.qty button:disabled{opacity:.45;cursor:not-allowed}
+.qty-value{min-width:28px;text-align:center;font-weight:800;color:var(--night)}
+@media(max-width:480px){
+  #basket-list li{flex-wrap:wrap}
+  .basket-name{flex-basis:100%}
+  .basket-price{margin-left:auto}
+}
 #basket-total{margin-top:14px;font-size:20px;font-weight:800;color:var(--night);text-align:right}
 /* Messages */
 #message,#message-save{padding:14px 18px;border-radius:12px;font-weight:600;text-align:left}
