@@ -6,14 +6,26 @@ var URL_SHEET = "https://script.google.com/macros/s/AKfycbyiwIBMtLVV5dz2B1wH9-iJ
 var WAVE_LIEN = "https://pay.wave.com/m/M_ci_JbW10MlZ1A4Y/c/ci/";
 // true = commandes seulement de 17h00 à 05h00 / false = toujours ouvert (pour tester)
 var VERIFIER_HORAIRES = false;
+// Le panier est une liste de lignes : { id: "...", qte: 1 }
 var panier = [];
 var commandeEnregistree = null;
+var CHAMPS_INFOS = [
+  { id: "student-lastname",  libelle: "votre nom" },
+  { id: "student-firstname", libelle: "votre prénom" },
+  { id: "student-level",     libelle: "votre niveau" },
+  { id: "student-filiere",   libelle: "votre filière" },
+  { id: "student-phone",     libelle: "votre numéro de téléphone" },
+  { id: "student-campus",    libelle: "votre campus" }
+];
 /* ---------- OUTILS ---------- */
 function formaterPrix(n) {
   return n.toLocaleString("fr-FR") + " FCFA";
 }
 function trouverPlat(id) {
   return MENU.find(function (p) { return p.id === id; });
+}
+function trouverLigne(id) {
+  return panier.find(function (l) { return l.id === id; });
 }
 function echapper(texte) {
   var d = document.createElement("div");
@@ -28,7 +40,7 @@ function afficherMessage(zone, type, html) {
 }
 function calculerTotal() {
   var somme = 0;
-  panier.forEach(function (id) { somme += trouverPlat(id).prix; });
+  panier.forEach(function (ligne) { somme += trouverPlat(ligne.id).prix * ligne.qte; });
   return somme;
 }
 /* ---------- MENU ---------- */
@@ -40,7 +52,7 @@ function afficherMenu() {
     carte.className = "dish" + (commandeEnregistree ? " locked" : "");
     carte.setAttribute("role", "button");
     carte.setAttribute("tabindex", "0");
-    carte.setAttribute("aria-pressed", panier.indexOf(plat.id) !== -1 ? "true" : "false");
+    carte.setAttribute("aria-pressed", trouverLigne(plat.id) ? "true" : "false");
     carte.dataset.id = plat.id;
 var zoneImg = document.createElement("div");
     zoneImg.className = "dish-img";
@@ -50,19 +62,19 @@ var zoneImg = document.createElement("div");
     img.loading = "lazy";
     img.onerror = function () { img.style.display = "none"; };
     zoneImg.appendChild(img);
- var texte = document.createElement("div");
+   var texte = document.createElement("div");
     texte.className = "dish-text";
-  var badge = document.createElement("span");
+    var badge = document.createElement("span");
     badge.className = "badge";
     badge.textContent = plat.categorie;
-   var titre = document.createElement("h3");
+    var titre = document.createElement("h3");
     titre.textContent = plat.nom;
- var desc = document.createElement("p");
+    var desc = document.createElement("p");
     desc.textContent = plat.description;
- var prix = document.createElement("p");
+    var prix = document.createElement("p");
     prix.className = "price";
     prix.textContent = formaterPrix(plat.prix);
-  texte.appendChild(badge);
+ texte.appendChild(badge);
     texte.appendChild(titre);
     texte.appendChild(desc);
     texte.appendChild(prix);
@@ -75,20 +87,43 @@ var zoneImg = document.createElement("div");
         basculerPlat(plat.id);
       }
     });
-  grille.appendChild(carte);
+    grille.appendChild(carte);
   });
 }
 /* ---------- PANIER ---------- */
+// Toucher une carte du menu : ajoute le plat (quantité 1) ou le retire.
 function basculerPlat(id) {
   if (commandeEnregistree) return; // sélection verrouillée après enregistrement
-  var position = panier.indexOf(id);
+  var position = panier.findIndex(function (l) { return l.id === id; });
   if (position === -1) {
-    panier.push(id);
+    panier.push({ id: id, qte: 1 });
   } else {
     panier.splice(position, 1);
   }
   afficherMenu();
   afficherPanier();
+}
+// Boutons − et + : delta = -1 ou +1.
+function changerQuantite(id, delta) {
+  if (commandeEnregistree) return;
+  var ligne = trouverLigne(id);
+  if (!ligne) return;
+  ligne.qte += delta;
+  if (ligne.qte <= 0) {
+    // "-" quand la quantité vaut 1 : le plat est retiré du panier
+    panier = panier.filter(function (l) { return l.id !== id; });
+  }
+  afficherMenu();
+  afficherPanier();
+}
+function creerBoutonQuantite(texte, label, action) {
+  var b = document.createElement("button");
+  b.type = "button";
+  b.textContent = texte;
+  b.setAttribute("aria-label", label);
+  b.disabled = !!commandeEnregistree;
+  b.addEventListener("click", action);
+  return b;
 }
 function afficherPanier() {
   var liste = document.getElementById("basket-list");
@@ -100,54 +135,76 @@ function afficherPanier() {
     total.hidden = true;
     return;
   }
-vide.hidden = true;
- panier.forEach(function (id) {
-    var plat = trouverPlat(id);
-  var li = document.createElement("li");
-    li.title = commandeEnregistree ? "" : "Toucher pour retirer";
-    var nom = document.createElement("span");
+  vide.hidden = true;
+panier.forEach(function (ligne) {
+    var plat = trouverPlat(ligne.id);
+    var li = document.createElement("li");
+ var nom = document.createElement("span");
+    nom.className = "basket-name";
     nom.textContent = plat.nom;
-    var prix = document.createElement("span");
-    prix.textContent = formaterPrix(plat.prix);
-    li.appendChild(nom);
+ // Sélecteur de quantité, placé juste avant le prix
+    var qty = document.createElement("div");
+    qty.className = "qty";
+    var moins = creerBoutonQuantite("−", "Retirer un " + plat.nom, function () { changerQuantite(ligne.id, -1); });
+    var valeur = document.createElement("span");
+    valeur.className = "qty-value";
+    valeur.textContent = ligne.qte;
+    valeur.setAttribute("aria-live", "polite");
+    var plus = creerBoutonQuantite("+", "Ajouter un " + plat.nom, function () { changerQuantite(ligne.id, 1); });
+    qty.appendChild(moins);
+    qty.appendChild(valeur);
+    qty.appendChild(plus);
+  var prix = document.createElement("span");
+    prix.className = "basket-price";
+    prix.textContent = formaterPrix(plat.prix * ligne.qte);
+ li.appendChild(nom);
+    li.appendChild(qty);
     li.appendChild(prix);
-    li.addEventListener("click", function () { basculerPlat(id); });
     liste.appendChild(li);
   });
- total.hidden = false;
+total.hidden = false;
   total.textContent = "Total : " + formaterPrix(calculerTotal());
 }
 /* ---------- INFORMATIONS ÉTUDIANT ---------- */
+function telephoneValide(valeur) {
+  // Accepte chiffres, espaces, points, tirets, parenthèses et un "+" initial ; 8 à 15 chiffres
+  if (!/^\+?[\d\s.\-()]+$/.test(valeur)) return false;
+  var chiffres = valeur.replace(/\D/g, "");
+  return chiffres.length >= 8 && chiffres.length <= 15;
+}
 function lireInfosEtudiant() {
-  var champs = [
-    { id: "student-name", libelle: "votre nom et prénom" },
-    { id: "student-class", libelle: "votre classe" },
-    { id: "student-campus", libelle: "votre campus" }
-  ];
   var manquants = [];
   var valeurs = {};
- champs.forEach(function (c) {
+CHAMPS_INFOS.forEach(function (c) {
     var el = document.getElementById(c.id);
     var valeur = el.value.trim();
-    el.parentElement.classList.toggle("invalid", !valeur);
-    if (!valeur) manquants.push(c.libelle);
+    var invalide = !valeur;
+    if (c.id === "student-phone" && valeur && !telephoneValide(valeur)) {
+      invalide = true;
+      c = { id: c.id, libelle: "un numéro de téléphone valide" };
+    }
+    el.parentElement.classList.toggle("invalid", invalide);
+    if (invalide) manquants.push(c.libelle);
     valeurs[c.id] = valeur;
   });
- if (manquants.length > 0) {
+if (manquants.length > 0) {
     var items = manquants.map(function (m) { return "<li>" + m + "</li>"; }).join("");
     afficherMessage("message-save", "error", "Veuillez renseigner :<ul>" + items + "</ul>");
     document.getElementById("infos").scrollIntoView();
     return null;
   }
  return {
-    nom: valeurs["student-name"],
-    classe: valeurs["student-class"],
+    nom: valeurs["student-lastname"],
+    prenom: valeurs["student-firstname"],
+    niveau: valeurs["student-level"],
+    filiere: valeurs["student-filiere"],
+    telephone: valeurs["student-phone"],
     campus: valeurs["student-campus"]
   };
 }
 function verrouillerInfos(etat) {
-  ["student-name", "student-class", "student-campus"].forEach(function (id) {
-    document.getElementById(id).disabled = etat;
+  CHAMPS_INFOS.forEach(function (c) {
+    document.getElementById(c.id).disabled = etat;
   });
 }
 /* ---------- HORAIRES ---------- */
@@ -165,21 +222,31 @@ async function enregistrerCommande() {
   }
  var infos = lireInfosEtudiant();
   if (!infos) return;
+
   if (VERIFIER_HORAIRES && !commandesOuvertes()) {
     afficherMessage("message-save", "warn", "Les commandes sont fermées pour le moment. Elles sont ouvertes chaque jour de 17h00 à 05h00.");
     return;
   }
- var noms = panier.map(function (id) { return trouverPlat(id).nom; });
+// Ex : "2 x Poulet braisé, 1 x Jus de bissap"
+  var plats = panier.map(function (ligne) {
+    return ligne.qte + " x " + trouverPlat(ligne.id).nom;
+  });
   var total = calculerTotal();
   var reference = "JN-" + Math.floor(1000 + Math.random() * 9000);
-
-  var commande = {
+ var commande = {
     reference: reference,
-    nom: infos.nom,
-    classe: infos.classe,
+    // "nom" et "classe" gardent la compatibilité avec ton Google Sheet actuel
+    nom: infos.nom + " " + infos.prenom,
+    classe: infos.niveau + " - " + infos.filiere,
     campus: infos.campus,
-    plats: noms.join(", "),
-    total: total
+    plats: plats.join(", "),
+    total: total,
+    // Nouveaux champs séparés
+    nom_famille: infos.nom,
+    prenom: infos.prenom,
+    niveau: infos.niveau,
+    filiere: infos.filiere,
+    telephone: infos.telephone
   };
  var bouton = document.getElementById("save-btn");
   bouton.disabled = true;
@@ -197,15 +264,15 @@ async function enregistrerCommande() {
     bouton.textContent = "Enregistrer ma commande";
     return;
   }
- commandeEnregistree = { reference: reference, total: total, nom: infos.nom };
- verrouillerInfos(true);
+ commandeEnregistree = { reference: reference, total: total, nom: infos.prenom + " " + infos.nom };
+verrouillerInfos(true);
   afficherMenu();
   afficherPanier();
  bouton.textContent = "Commande enregistrée ✓";
-afficherMessage(
+  afficherMessage(
     "message-save",
     "success",
-    "Merci " + echapper(infos.nom) + " ! Votre commande est enregistrée.<br>" +
+    "Merci " + echapper(infos.prenom) + " ! Votre commande est enregistrée.<br>" +
     "Référence : <strong>" + reference + "</strong><br>" +
     "Total : <strong>" + formaterPrix(total) + "</strong><br>" +
     "Retrait au campus : " + echapper(infos.campus) + "<br>" +
@@ -223,13 +290,13 @@ function passerCommande() {
     return;
   }
  var url = WAVE_LIEN + (WAVE_LIEN.indexOf("?") === -1 ? "?" : "&") + "amount=" + commandeEnregistree.total;
-afficherMessage(
+  afficherMessage(
     "message",
     "success",
     "Redirection vers Wave... Montant : " + formaterPrix(commandeEnregistree.total) +
     ". Référence : <strong>" + commandeEnregistree.reference + "</strong>"
   );
- window.location.href = url;
+  window.location.href = url;
 }
 /* ---------- NOUVELLE COMMANDE ---------- */
 function nouvelleCommande() {
