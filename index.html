@@ -29,18 +29,37 @@
       <a class="btn" href="#infos">Commencer</a>
     </div>
   </div>
-<section id="infos">
+ <section id="infos">
     <div class="container">
       <h2>Mes informations</h2>
       <p class="intro">Renseignez vos informations pour que nous puissions préparer votre commande.</p>
       <form class="info-form" id="info-form" autocomplete="off" onsubmit="return false">
         <div class="field">
-          <label for="student-name">Nom et prénom</label>
-          <input type="text" id="student-name" placeholder="Ex : Kouassi Yao">
+          <label for="student-lastname">Nom</label>
+          <input type="text" id="student-lastname" placeholder="Ex : Kouassi" autocomplete="family-name">
         </div>
         <div class="field">
-          <label for="student-class">Classe</label>
-          <input type="text" id="student-class" placeholder="Ex : Licence 2 Sciences Éco">
+          <label for="student-firstname">Prénom</label>
+          <input type="text" id="student-firstname" placeholder="Ex : Yao" autocomplete="given-name">
+        </div>
+        <div class="field">
+          <label for="student-level">Niveau</label>
+          <select id="student-level">
+            <option value="" disabled selected>Choisir mon niveau</option>
+            <option value="Licence 1">Licence 1</option>
+            <option value="Licence 2">Licence 2</option>
+            <option value="Licence 3">Licence 3</option>
+            <option value="Master 1">Master 1</option>
+            <option value="Master 2">Master 2</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="student-filiere">Filière</label>
+          <input type="text" id="student-filiere" placeholder="Ex : Sciences Économiques">
+        </div>
+        <div class="field">
+          <label for="student-phone">Numéro de téléphone</label>
+          <input type="tel" id="student-phone" inputmode="tel" placeholder="Ex : 07 00 00 00 00" autocomplete="tel">
         </div>
         <div class="field">
           <label for="student-campus">Campus</label>
@@ -56,12 +75,12 @@
       </form>
     </div>
   </section>
-<section id="menu">
+ <section id="menu">
     <div class="container">
       <h2>Le menu</h2>
       <p class="intro">Touchez un plat pour l'ajouter à votre panier, touchez-le à nouveau pour le retirer.</p>
       <div class="menu-grid" id="menu-grid"></div>
- <div class="basket-box" id="panier">
+<div class="basket-box" id="panier">
         <h3>Mon panier</h3>
         <p id="basket-empty">Votre panier est vide.</p>
         <ul id="basket-list" aria-live="polite"></ul>
