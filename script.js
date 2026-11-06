@@ -2,7 +2,7 @@
    JN Food - script.js (version définitive)
    ========================================================= */
 /* ---------- RÉGLAGES ---------- */
-var URL_SHEET = "https://script.google.com/macros/s/AKfycbyiwIBMtLVV5dz2B1wH9-iJJUHW6e2tLxSj89e6FYYi5IgO-Sf4M4BxTluXnXVhn1FsqQ/exec";
+var URL_SHEET = "https://script.google.com/macros/s/AKfycbwbPXzSHjzF6FtT-uvLP1MGwRdVbjHISXbmF6o9FbV9ZrsQOSJEpr-EUJwpCNjbQcBU/exec";
 var WAVE_LIEN = "https://pay.wave.com/m/M_ci_JbW10MlZ1A4Y/c/ci/";
 // true = commandes seulement de 17h00 à 05h00 / false = toujours ouvert (pour tester)
 var VERIFIER_HORAIRES = false;
@@ -54,7 +54,7 @@ function afficherMenu() {
     carte.setAttribute("tabindex", "0");
     carte.setAttribute("aria-pressed", trouverLigne(plat.id) ? "true" : "false");
     carte.dataset.id = plat.id;
-var zoneImg = document.createElement("div");
+ var zoneImg = document.createElement("div");
     zoneImg.className = "dish-img";
     var img = document.createElement("img");
     img.src = plat.image;
@@ -62,7 +62,7 @@ var zoneImg = document.createElement("div");
     img.loading = "lazy";
     img.onerror = function () { img.style.display = "none"; };
     zoneImg.appendChild(img);
-   var texte = document.createElement("div");
+var texte = document.createElement("div");
     texte.className = "dish-text";
     var badge = document.createElement("span");
     badge.className = "badge";
@@ -130,19 +130,19 @@ function afficherPanier() {
   var vide = document.getElementById("basket-empty");
   var total = document.getElementById("basket-total");
   liste.innerHTML = "";
- if (panier.length === 0) {
+if (panier.length === 0) {
     vide.hidden = false;
     total.hidden = true;
     return;
   }
   vide.hidden = true;
-panier.forEach(function (ligne) {
+ panier.forEach(function (ligne) {
     var plat = trouverPlat(ligne.id);
     var li = document.createElement("li");
  var nom = document.createElement("span");
     nom.className = "basket-name";
     nom.textContent = plat.nom;
- // Sélecteur de quantité, placé juste avant le prix
+// Sélecteur de quantité, placé juste avant le prix
     var qty = document.createElement("div");
     qty.className = "qty";
     var moins = creerBoutonQuantite("−", "Retirer un " + plat.nom, function () { changerQuantite(ligne.id, -1); });
@@ -154,10 +154,10 @@ panier.forEach(function (ligne) {
     qty.appendChild(moins);
     qty.appendChild(valeur);
     qty.appendChild(plus);
-  var prix = document.createElement("span");
+ var prix = document.createElement("span");
     prix.className = "basket-price";
     prix.textContent = formaterPrix(plat.prix * ligne.qte);
- li.appendChild(nom);
+  li.appendChild(nom);
     li.appendChild(qty);
     li.appendChild(prix);
     liste.appendChild(li);
@@ -175,25 +175,26 @@ function telephoneValide(valeur) {
 function lireInfosEtudiant() {
   var manquants = [];
   var valeurs = {};
-CHAMPS_INFOS.forEach(function (c) {
+ CHAMPS_INFOS.forEach(function (c) {
     var el = document.getElementById(c.id);
     var valeur = el.value.trim();
     var invalide = !valeur;
+    var libelle = c.libelle;
     if (c.id === "student-phone" && valeur && !telephoneValide(valeur)) {
       invalide = true;
-      c = { id: c.id, libelle: "un numéro de téléphone valide" };
+      libelle = "un numéro de téléphone valide";
     }
     el.parentElement.classList.toggle("invalid", invalide);
-    if (invalide) manquants.push(c.libelle);
+    if (invalide) manquants.push(libelle);
     valeurs[c.id] = valeur;
   });
-if (manquants.length > 0) {
+ if (manquants.length > 0) {
     var items = manquants.map(function (m) { return "<li>" + m + "</li>"; }).join("");
     afficherMessage("message-save", "error", "Veuillez renseigner :<ul>" + items + "</ul>");
     document.getElementById("infos").scrollIntoView();
     return null;
   }
- return {
+return {
     nom: valeurs["student-lastname"],
     prenom: valeurs["student-firstname"],
     niveau: valeurs["student-level"],
@@ -215,15 +216,14 @@ function commandesOuvertes() {
 /* ---------- ÉTAPE 1 : ENREGISTRER LA COMMANDE ---------- */
 async function enregistrerCommande() {
   if (commandeEnregistree) return;
- if (panier.length === 0) {
+if (panier.length === 0) {
     afficherMessage("message-save", "warn", "Votre panier est vide. Choisissez au moins un plat dans le menu.");
     document.getElementById("menu").scrollIntoView();
     return;
   }
  var infos = lireInfosEtudiant();
   if (!infos) return;
-
-  if (VERIFIER_HORAIRES && !commandesOuvertes()) {
+ if (VERIFIER_HORAIRES && !commandesOuvertes()) {
     afficherMessage("message-save", "warn", "Les commandes sont fermées pour le moment. Elles sont ouvertes chaque jour de 17h00 à 05h00.");
     return;
   }
@@ -233,25 +233,23 @@ async function enregistrerCommande() {
   });
   var total = calculerTotal();
   var reference = "JN-" + Math.floor(1000 + Math.random() * 9000);
- var commande = {
+  // Ces champs correspondent aux colonnes du Google Sheet
+  var commande = {
     reference: reference,
-    // "nom" et "classe" gardent la compatibilité avec ton Google Sheet actuel
-    nom: infos.nom + " " + infos.prenom,
-    classe: infos.niveau + " - " + infos.filiere,
-    campus: infos.campus,
-    plats: plats.join(", "),
-    total: total,
-    // Nouveaux champs séparés
     nom_famille: infos.nom,
     prenom: infos.prenom,
     niveau: infos.niveau,
     filiere: infos.filiere,
-    telephone: infos.telephone
+    telephone: infos.telephone,
+    campus: infos.campus,
+    plats: plats.join(", "),
+    total: total
   };
  var bouton = document.getElementById("save-btn");
   bouton.disabled = true;
   bouton.textContent = "Enregistrement...";
- try {
+
+  try {
     await fetch(URL_SHEET, {
       method: "POST",
       mode: "no-cors",
